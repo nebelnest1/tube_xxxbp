@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#d92525">
+  <meta name="theme-color" content="#E43A45">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
   <title>Video Player</title>
@@ -193,162 +193,176 @@
   </script>
 
 <style>
-/* СБРОС И ОСНОВНОЙ ФОН */
-body { margin: 0; padding: 0; background-color: #f1f1f1; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; overflow-x: hidden; color: #333; }
+/* БАЗОВЫЕ СТИЛИ */
+body { margin: 0; padding: 0; background-color: #f5f5f5; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; overflow-x: hidden; color: #333; }
 * { box-sizing: border-box; }
 
-/* ШАПКА В СТИЛЕ XV */
-.xv-header { background-color: #d92525; display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-.xv-header-left, .xv-header-right { display: flex; align-items: center; gap: 15px; }
-.xv-menu-btn svg, .xv-search-btn svg, .xv-user-btn svg { width: 24px; height: 24px; fill: #fff; cursor: pointer; }
-.xv-logo { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: -1px; text-decoration: none; cursor: pointer; display: flex; align-items: center; }
-.xv-logo span { color: #ffd6d6; font-weight: 400; }
+.main-content { max-width: 480px; margin: 0 auto; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); min-height: 100vh; }
+.fade-in-wrapper { animation: fadeInPage .35s ease-out forwards; opacity: 0; }
+@keyframes fadeInPage { to { opacity: 1 } }
 
-/* СПИСОК ССЫЛОК */
-.links-ad { display: flex; gap: 8px; padding: 12px 15px; margin: 0; list-style: none; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; background: #fff; border-bottom: 1px solid #ddd; }
+/* ШАПКА XH */
+.xh-header { background-color: #E43A45; display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.xh-header-left, .xh-header-right { display: flex; align-items: center; gap: 15px; }
+.xh-icon svg { width: 24px; height: 24px; fill: #fff; cursor: pointer; }
+.xh-logo { display: flex; align-items: center; cursor: pointer; }
+.xh-logo svg { height: 26px; fill: #fff; }
+
+/* КАРАУСЕЛЬ ССЫЛОК (Как на скрине) */
+.section-row-links { background: #f5f5f5; border-bottom: 1px solid #e0e0e0; }
+.links-ad { display: flex; gap: 10px; padding: 12px 15px; margin: 0; list-style: none; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
 .links-ad::-webkit-scrollbar { display: none; }
-.links-ad li a { display: inline-block; padding: 6px 12px; background-color: #f8f8f8; border-radius: 4px; color: #d92525; font-weight: bold; text-decoration: none; font-size: 13px; border: 1px solid #e0e0e0; transition: background 0.2s; }
-.links-ad li a:hover { background-color: #f0f0f0; }
+.links-ad li a { display: inline-block; padding: 6px 14px; background-color: #fff; border-radius: 20px; color: #E43A45; font-weight: 600; text-decoration: none; font-size: 13px; border: 1px solid #ddd; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 
-/* ГЛАВНЫЙ КОНТЕЙНЕР */
-.main-content { max-width: 1200px; margin: 0 auto; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+/* ИНФО О ВИДЕО (Заголовок + Теги) */
+.video-info { padding: 15px; background: #fff; }
+.vp-title-wrapper { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.vp-title-icon { flex-shrink: 0; margin-top: 2px; }
+.vp-title-icon svg { width: 20px; height: 20px; fill: #E43A45; }
+.vp-title { font-size: 16px; font-weight: 700; margin: 0; color: #111; line-height: 1.3; }
 
-/* ЗАГОЛОВОК ВИДЕО */
-.video-info { padding: 15px; border-bottom: 1px solid #ddd; }
-.vp-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; color: #000; line-height: 1.3; }
-.vp-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.vp-tag { background: #e8e8e8; color: #555; padding: 4px 8px; border-radius: 3px; font-size: 12px; font-weight: bold; }
-.vp-tag.premium { background: #d92525; color: #fff; }
+.vp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.vp-tag { background: #f0f0f0; color: #555; padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+.vp-tag.premium { background: #f5c518; color: #000; }
 
-/* ПЛЕЕР (ЛОГИКА ОСТАЛАСЬ, СТИЛИ АДАПТИРОВАНЫ ПОД ДИЗАЙН) */
+/* ПЛЕЕР (Оригинальная логика, обновленный визуал) */
 .pl-video-container { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; background: #000; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .pl-frame { width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .25s ease-out, filter .5s ease; z-index: 1; position: absolute; top: 0; left: 0; }
 .pl-frame.loading-state { opacity: 1; filter: blur(12px) brightness(.55); }
 .pl-frame.is-ready { opacity: 1; filter: blur(0) brightness(1); }
 
-.pl-play-btn { position: absolute; z-index: 6; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: transform 0.2s; }
+.pl-play-btn { position: absolute; z-index: 6; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
 .pl-play-btn.ready { opacity: 1; pointer-events: auto; }
-.pl-play-btn svg { width: 70px; height: 70px; fill: rgba(217, 37, 37, 0.9)!important; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); border-radius: 50%; background: rgba(255,255,255,0.8); }
+.pl-play-btn svg { width: 75px; height: 75px; fill: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,.6)); opacity: 0.9; }
 
-.pl-bottom-controls { position: absolute; bottom: 0; left: 0; width: 100%; height: 45px; display: flex; align-items: center; padding: 0 10px; background: rgba(0,0,0,0.7); z-index: 5; pointer-events: none; }
-.pl-vol-btn { width: 28px; height: 28px; fill: #fff; margin-right: 10px; cursor: pointer; pointer-events: auto; }
-.pl-progress-track { flex-grow: 1; height: 4px; background: rgba(255,255,255,.3); position: relative; margin-right: 15px; cursor: pointer; pointer-events: auto; display: flex; align-items: center; }
-.pl-progress-filled { width: 15%; height: 100%; background: #d92525; position: absolute; left: 0; top: 0; z-index: 2; }
-.pl-progress-dot { width: 12px; height: 12px; background: #fff; border-radius: 50%; position: absolute; right: -6px; top: -4px; box-shadow: 0 0 3px rgba(0,0,0,.5); }
+.pl-bottom-controls { position: absolute; bottom: 0; left: 0; width: 100%; height: 45px; display: flex; align-items: center; padding: 0 10px; background: linear-gradient(0deg,rgba(0,0,0,.7) 0,transparent 100%); z-index: 5; pointer-events: none; }
+.pl-vol-btn { width: 26px; height: 26px; fill: #fff; margin-right: 12px; cursor: pointer; pointer-events: auto; }
+.pl-progress-track { flex-grow: 1; height: 3px; background: rgba(255,255,255,.3); position: relative; margin-right: 15px; cursor: pointer; pointer-events: auto; display: flex; align-items: center; }
+.pl-progress-filled { width: 15%; height: 100%; background: #E43A45; position: absolute; left: 0; top: 0; z-index: 2; }
+.pl-progress-dot { width: 12px; height: 12px; background: #E43A45; border-radius: 50%; position: absolute; right: -6px; top: -4.5px; box-shadow: 0 0 3px rgba(0,0,0,.5); }
 
-.pl-player-time { color: #fff; font-size: 12px; font-weight: bold; font-family: monospace; pointer-events: none; margin-right: 15px; z-index: 10; }
-.pl-chromecast { display: none; } /* Спрятано в новом дизе для аккуратности, но можно вернуть */
-.buttons-bar { display: flex; align-items: center; gap: 10px; pointer-events: auto; }
+.pl-player-time { position: absolute; bottom: 50px; left: 15px; z-index: 20; color: #fff; font-size: 13px; font-weight: 700; text-shadow: 1px 1px 2px #000; pointer-events: none; }
+.buttons-bar { display: flex; align-items: center; gap: 15px; pointer-events: auto; }
 .buttons-bar svg { width: 22px; height: 22px; fill: #fff; }
 
-/* ПАНЕЛЬ ДЕЙСТВИЙ (Лайки, Просмотры) */
-.action-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #fafafa; border-bottom: 1px solid #ddd; flex-wrap: wrap; gap: 10px; }
+.pl-chromecast { display: none; }
+
+/* ПАНЕЛЬ СТАТИСТИКИ И ДЕЙСТВИЙ */
+.action-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #fff; border-bottom: 1px solid #ddd; }
 .action-stats { display: flex; gap: 15px; align-items: center; }
-.stat-item { display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: bold; color: #555; }
+.stat-item { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: #555; }
 .stat-item svg { width: 18px; height: 18px; fill: #888; }
-.action-buttons { display: flex; gap: 10px; }
-.btn-action { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 6px 12px; background: #e0e0e0; border-radius: 4px; font-size: 13px; font-weight: bold; color: #333; cursor: pointer; }
-.btn-action.like { background: #d4edda; color: #155724; }
-.btn-action.dislike { background: #f8d7da; color: #721c24; }
-.btn-action svg { width: 16px; height: 16px; }
+.action-buttons { display: flex; gap: 15px; align-items: center; }
+.btn-action { display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.btn-action svg { width: 22px; height: 22px; fill: #555; }
 
-/* ВКЛАДКИ (Похожие видео) */
-.tabs-container { padding: 15px; background: #fff; border-bottom: 1px solid #ddd; }
-.tabs-title { font-size: 16px; font-weight: bold; margin: 0 0 10px 0; color: #333; border-left: 4px solid #d92525; padding-left: 8px; }
+/* ПОХОЖИЕ ВИДЕО */
+.related-section { background: #f5f5f5; padding-top: 10px; }
+.tabs-title { font-size: 15px; font-weight: 700; padding: 10px 15px; color: #111; background: #fff; border-bottom: 1px solid #e0e0e0; }
 
-/* СЕТКА ПОХОЖИХ ВИДЕО */
-.related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; background: #f1f1f1; }
-.related-item { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; cursor: pointer; border-radius: 4px; overflow: hidden; }
+.related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 15px; }
+.related-item { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; flex-direction: column; cursor: pointer; border-radius: 4px; overflow: hidden; }
 .thumb-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #ccc; }
 .thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-.thumb-badge-time { position: absolute; bottom: 5px; right: 5px; font-size: 11px; padding: 2px 4px; background: rgba(0,0,0,.8); color: #fff; border-radius: 2px; font-weight: bold; }
-.thumb-badge-hd { position: absolute; top: 5px; right: 5px; font-size: 10px; padding: 2px 4px; background: #d92525; color: #fff; font-weight: bold; border-radius: 2px; }
+.thumb-badge-time { position: absolute; bottom: 5px; right: 5px; font-size: 11px; padding: 2px 4px; background: rgba(0,0,0,.7); color: #fff; border-radius: 2px; font-weight: bold; }
+.thumb-badge-hd { position: absolute; top: 5px; right: 5px; font-size: 10px; padding: 2px 4px; background: #E43A45; color: #fff; font-weight: bold; border-radius: 2px; }
 .thumb-info { padding: 8px; }
-.thumb-title { font-size: 13px; font-weight: bold; color: #111; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.thumb-title { font-size: 12px; font-weight: 700; color: #111; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .thumb-channel { font-size: 11px; color: #777; display: flex; justify-content: space-between; align-items: center; }
 
 /* МОДАЛКА ВЫХОДА */
 .pl-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;font-family:sans-serif}
 .pl-modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px)}
 .pl-modal-content{position:relative;z-index:100000;width:85%;max-width:300px;background:#fff; border-radius:8px;padding:24px;text-align:center;color:#333;box-shadow:0 10px 40px rgba(0,0,0,.5)}
-.pl-modal-title{font-size:20px;font-weight:700;margin-bottom:10px; color:#d92525;}
+.pl-modal-title{font-size:20px;font-weight:700;margin-bottom:10px; color:#E43A45;}
 .pl-modal-desc{font-size:14px;color:#555;margin-bottom:20px;line-height:1.4}
 .pl-modal-actions{display:flex;flex-direction:column;gap:10px}
 .pl-btn{border:none;outline:none;padding:12px;border-radius:4px;font-size:16px;font-weight:bold;cursor:pointer;width:100%}
-.pl-btn-primary{background:#d92525;color:#fff}
+.pl-btn-primary{background:#E43A45;color:#fff}
 .pl-btn-secondary{background:#e0e0e0;color:#333}
 
-/* Анимация пульса для Play */
-@keyframes playPulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
-.pl-play-btn.ready svg{animation:playPulse 2s infinite ease-in-out}
-
-@media(min-width: 768px) {
-  .related-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
-}
+/* АНИМАЦИЯ ПЛЕЯ И КЛОН-МОД */
+@keyframes playPulse{0%{transform:scale(1)}50%{transform:scale(1.1);filter:drop-shadow(0 0 15px rgba(255,255,255,.5))}100%{transform:scale(1)}}
+.clone-mode .pl-play-btn.ready svg{animation:playPulse 1.5s infinite ease-in-out}
 
 html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!important;padding:0!important;overflow:hidden!important;width:100%!important;height:100%!important}
 .clone-mode .pl-video-container{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;max-width:none!important;aspect-ratio:auto!important;background:#000!important;z-index:9999!important}
-.clone-mode .xv-header, .clone-mode .links-ad, .clone-mode .video-info, .clone-mode .action-bar, .clone-mode .tabs-container, .clone-mode .related-grid { display: none !important; }
+.clone-mode .main-content > *:not(.pl-video-container) { display: none !important; }
+.clone-mode .pl-clone-back-btn{display:flex!important;position:absolute;top:15px;left:15px;z-index:50;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;filter:drop-shadow(1px 1px 2px rgba(0,0,0,.8))}
+.clone-mode .pl-clone-back-btn svg{width:28px;height:28px}
+.pl-clone-back-btn { display: none; }
 </style>
 </head>
 
 <body>
 
-<div class="main-content">
+<div class="main-content fade-in-wrapper">
 
-  <div class="xv-header vp-mishura" data-target="banner_main">
-    <div class="xv-header-left">
-      <div class="xv-menu-btn" data-target="back_button">
+  <div class="xh-header vp-mishura" data-target="banner_main">
+    <div class="xh-header-left">
+      <div class="xh-icon" data-target="back_button">
         <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
-      <div class="xv-logo" data-target="banner_main">X<span>VIDS</span></div>
+      <div class="xh-logo" data-target="banner_main">
+        <svg viewBox="0 0 150 40">
+          <text x="0" y="28" font-family="Arial" font-weight="bold" font-size="26" fill="#fff">xHamster</text>
+        </svg>
+      </div>
     </div>
-    <div class="xv-header-right">
-      <div class="xv-search-btn" data-target="banner_main">
+    <div class="xh-header-right">
+      <div class="xh-icon" data-target="banner_main">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
-      <div class="xv-user-btn" data-target="banner_main">
+      <div class="xh-icon" data-target="banner_main">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
       </div>
     </div>
   </div>
 
-  <ul class="links-ad vp-mishura" data-target="banner_main">
-      <li><a target="_blank" rel="nofollow noopener" href="https://bulecams.com">Live Sex</a></li> 
-      <li><a target="_blank" rel="nofollow sponsored noopener" href="https://fruitylinks.com/CxcT5Q">Fuck NOW!</a></li> 
-      <li><a target="_blank" rel="nofollow sponsored noopener" href="https://fruitylinks.com/Rr1M4G">Sex Games</a></li>   
-      <li><a target="_blank" rel="nofollow sponsored noopener" href="https://fruitylinks.com/GTtg4T">Sex Chat</a></li>  
-  </ul>
+  <section class="section-row-links ads-mobile vp-mishura" data-target="banner_main">
+    <ul class="links-ad">
+        <li><a target="_blank" rel="nofollow noopener" href="https://bulecams.com">Live Sex</a></li> 
+        <li><a target="_blank" rel="nofollow sponsored noopener" href="https://fruitylinks.com/CxcT5Q">Fuck NOW!</a></li> 
+        <li><a target="_blank" rel="nofollow sponsored noopener" href="https://fruitylinks.com/Rr1M4G">Sex Games</a></li>   
+        <li><a target="_blank" rel="nofollow sponsored noopener" href="https://fruitylinks.com/GTtg4T">Sex Chat</a></li>  
+    </ul>
+  </section>
 
   <div class="video-info vp-mishura" data-target="banner_main">
-    <h1 class="vp-title" id="t-mainTitle">Loading title...</h1>
+    <div class="vp-title-wrapper">
+      <div class="vp-title-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-1 14H4V6h16v12zm-9.5-2V8l6 4-6 4z"/></svg>
+      </div>
+      <h1 class="vp-title" id="t-mainTitle">Loading title...</h1>
+    </div>
     <div class="vp-tags">
-      <span class="vp-tag premium">HD</span>
-      <span class="vp-tag">Amateur</span>
-      <span class="vp-tag">Homemade</span>
-      <span class="vp-tag">Viral</span>
+      <span class="vp-tag">Verified Amateur</span>
+      <span class="vp-tag">60 FPS</span>
+      <span class="vp-tag premium">Premium</span>
     </div>
   </div>
 
   <div class="pl-video-container" data-target="main_play">
+    <div class="pl-clone-back-btn" data-target="back_button">
+      <svg viewBox="0 0 24 24"><path fill="#fff" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </div>
+    <div class="pl-player-time">00:00 / 10:19</div>
     
     <img class="pl-frame pl-main-play-trigger" id="frame" alt="" fetchpriority="high" decoding="async" data-target="main_play" />
     <div class="pl-loader pl-shimmer pl-main-play-trigger" data-target="main_play"></div>
     
     <div class="pl-play-btn pl-main-play-trigger" data-target="main_play" aria-label="Play">
-      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="rgba(0,0,0,0.5)" stroke="#fff" stroke-width="4"/><path d="M 40 30 L 70 50 L 40 70 Z" fill="#fff"/></svg>
     </div>
     
     <div class="pl-bottom-controls" data-target="timeline">
-      <div class="pl-player-time">00:00 / 10:19</div>
-      
+      <svg class="pl-vol-btn" viewBox="0 0 24 24" data-target="mute_unmute"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
       <div class="pl-progress-track" data-target="timeline">
          <div class="pl-progress-filled pl-buffer-bar"><div class="pl-progress-dot"></div></div>
       </div>
-      
       <div class="buttons-bar right noselect">
-        <div data-target="mute_unmute">
-          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <div data-target="settings">
+          <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .43-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.49-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
         </div>
         <div data-target="fullscreen">
           <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -361,74 +375,74 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
     <div class="action-stats">
       <div class="stat-item">
         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-        <span id="t-views">550k</span>
+        <span id="t-views">3.9M</span>
       </div>
       <div class="stat-item">
         <svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg>
-        96%
+        14K
+      </div>
+      <div class="stat-item">
+        <svg viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>
+        3.1K
       </div>
     </div>
     
     <div class="action-buttons">
-      <div class="btn-action like">
-        <svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg>
-      </div>
-      <div class="btn-action dislike">
-        <svg viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>
+      <div class="btn-action">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       </div>
       <div class="btn-action">
-        <span id="t-download">Download</span>
+        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
       </div>
     </div>
   </div>
 
-  <div class="tabs-container vp-mishura" data-target="banner_main">
-    <div class="tabs-title" id="t-related">Related videos</div>
-  </div>
-
-  <div class="related-grid vp-mishura" data-target="banner_main">
-    <div class="related-item">
-      <div class="thumb-wrapper">
-        <img src="./assets/images/1.webp" alt="video 1">
-        <span class="thumb-badge-hd">1080p</span>
-        <span class="thumb-badge-time">11:05</span>
+  <div class="related-section vp-mishura" data-target="banner_main">
+    <div class="tabs-title" id="t-related">Related Videos</div>
+    <div class="related-grid">
+      <div class="related-item">
+        <div class="thumb-wrapper">
+          <img src="./assets/images/1.webp" alt="video 1">
+          <span class="thumb-badge-hd">HD</span>
+          <span class="thumb-badge-time">11:05</span>
+        </div>
+        <div class="thumb-info">
+          <div class="thumb-title dynamic-text">Loading...</div>
+          <div class="thumb-channel">Video Hub <span>96%</span></div>
+        </div>
       </div>
-      <div class="thumb-info">
-        <div class="thumb-title dynamic-text">Loading...</div>
-        <div class="thumb-channel">Video Hub <span>96%</span></div>
+      <div class="related-item">
+        <div class="thumb-wrapper">
+          <img src="./assets/images/2.webp" alt="video 2">
+          <span class="thumb-badge-hd">HD</span>
+          <span class="thumb-badge-time">10:12</span>
+        </div>
+        <div class="thumb-info">
+          <div class="thumb-title dynamic-text">Loading...</div>
+          <div class="thumb-channel">Private Archive <span>92%</span></div>
+        </div>
       </div>
-    </div>
-    <div class="related-item">
-      <div class="thumb-wrapper">
-        <img src="./assets/images/2.webp" alt="video 2">
-        <span class="thumb-badge-hd">1080p</span>
-        <span class="thumb-badge-time">10:12</span>
+      <div class="related-item">
+        <div class="thumb-wrapper">
+          <img src="./assets/images/3.webp" alt="video 3">
+          <span class="thumb-badge-hd">HD</span>
+          <span class="thumb-badge-time">14:40</span>
+        </div>
+        <div class="thumb-info">
+          <div class="thumb-title dynamic-text">Loading...</div>
+          <div class="thumb-channel">Anonymous <span>88%</span></div>
+        </div>
       </div>
-      <div class="thumb-info">
-        <div class="thumb-title dynamic-text">Loading...</div>
-        <div class="thumb-channel">Private Archive <span>92%</span></div>
-      </div>
-    </div>
-    <div class="related-item">
-      <div class="thumb-wrapper">
-        <img src="./assets/images/3.webp" alt="video 3">
-        <span class="thumb-badge-hd">1080p</span>
-        <span class="thumb-badge-time">14:40</span>
-      </div>
-      <div class="thumb-info">
-        <div class="thumb-title dynamic-text">Loading...</div>
-        <div class="thumb-channel">Anonymous <span>88%</span></div>
-      </div>
-    </div>
-    <div class="related-item">
-      <div class="thumb-wrapper">
-        <img src="./assets/images/4.webp" alt="video 4">
-        <span class="thumb-badge-hd">1080p</span>
-        <span class="thumb-badge-time">08:25</span>
-      </div>
-      <div class="thumb-info">
-        <div class="thumb-title dynamic-text">Loading...</div>
-        <div class="thumb-channel">Media Feed <span>99%</span></div>
+      <div class="related-item">
+        <div class="thumb-wrapper">
+          <img src="./assets/images/4.webp" alt="video 4">
+          <span class="thumb-badge-hd">HD</span>
+          <span class="thumb-badge-time">08:25</span>
+        </div>
+        <div class="thumb-info">
+          <div class="thumb-title dynamic-text">Loading...</div>
+          <div class="thumb-channel">Media Feed <span>99%</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -462,7 +476,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
     const dict = {
       en: { 
         titleArr: [123,67,125,32,105,115,32,105,110,32,115,104,111,99,107,58,32,116,104,101,32,109,111,115,116,32,104,97,114,100,99,111,114,101,32,112,114,105,118,97,116,101,32,118,105,100,101,111,32,108,101,97,107,101,100,32,111,110,108,105,110,101,32,55357,56613,32,87,97,116,99,104,32,98,101,102,111,114,101,32,105,116,39,115,32,100,101,108,101,116,101,100,33,33,33], fallbackGeo: "The country",
-        views: "3M", comments: "Comments", download: "Download", report: "Report", related: "Related videos", playlists: "Related playlists",
+        views: "3.9M", comments: "Comments", download: "Download", report: "Report", related: "Related Videos", playlists: "Related playlists",
         randomArr: [
           [76,101,97,107,101,100,32,104,111,109,101,109,97,100,101,32,116,97,112,101,32,99,97,117,103,104,116,32,111,110,32,99,97,109,101,114,97],
           [65,109,97,116,101,117,114,32,104,105,100,100,101,110,32,99,97,109,32,102,111,111,116,97,103,101,32,101,120,112,111,115,101,100],
@@ -473,7 +487,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       ru: { 
         titleArr: [123,67,125,32,1074,32,1096,1086,1082,1077,58,32,1089,1072,1084,1086,1077,32,1078,1105,1089,1090,1082,1086,1077,32,1087,1088,1080,1074,1072,1090,1085,1086,1077,32,1074,1080,1076,1077,1086,32,1089,1083,1080,1083,1080,32,1074,32,1089,1077,1090,1100,32,55357,56613,32,1057,1084,1086,1090,1088,1080,44,32,1087,1086,1082,1072,32,1085,1077,32,1091,1076,1072,1083,1080,1083,1080,33,33,33], fallbackGeo: "Страна",
-        views: "3М", comments: "Комментарии", download: "Скачать", report: "Репорт", related: "Похожие видео", playlists: "Похожие плейлисты",
+        views: "3.9М", comments: "Комментарии", download: "Скачать", report: "Репорт", related: "Похожие видео", playlists: "Похожие плейлисты",
         randomArr: [
           [1057,1083,1080,1090,1086,1077,32,1076,1086,1084,1072,1096,1085,1077,1077,32,1074,1080,1076,1077,1086,32,1089,1086,32,1089,1082,1088,1099,1090,1086,1081,32,1082,1072,1084,1077,1088,1099],
           [1051,1102,1073,1080,1090,1077,1083,1100,1089,1082,1080,1077,32,1082,1072,1076,1088,1099,32,1087,1086,1087,1072,1083,1080,32,1074,32,1089,1077,1090,1100],
@@ -484,7 +498,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       es: { 
         titleArr: [123,67,125,32,101,115,116,225,32,101,110,32,115,104,111,99,107,58,32,101,108,32,118,105,100,101,111,32,112,114,105,118,97,100,111,32,109,225,115,32,101,120,116,114,101,109,111,32,115,101,32,102,105,108,116,114,243,32,101,110,32,108,237,110,101,97,32,55357,56613,32,161,77,105,114,97,32,97,110,116,101,115,32,100,101,32,113,117,101,32,108,111,32,98,111,114,114,101,110,33], fallbackGeo: "El país",
-        views: "3M", comments: "Comentarios", download: "Descargar", report: "Reportar", related: "Videos relacionados", playlists: "Listas relacionadas",
+        views: "3.9M", comments: "Comentarios", download: "Descargar", report: "Reportar", related: "Videos relacionados", playlists: "Listas relacionadas",
         randomArr: [
           [86,105,100,101,111,32,99,97,115,101,114,111,32,102,105,108,116,114,97,100,111,32,101,110,32,99,225,109,97,114,97,32,111,99,117,108,116,97],
           [73,109,225,103,101,110,101,115,32,97,109,97,116,101,117,114,32,102,105,108,116,114,97,100,97,115,32,101,110,32,105,110,116,101,114,110,101,116],
@@ -495,7 +509,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       pt: { 
         titleArr: [123,67,125,32,101,115,116,225,32,101,109,32,99,104,111,113,117,101,58,32,111,32,118,237,100,101,111,32,112,114,105,118,97,100,111,32,109,97,105,115,32,104,97,114,100,99,111,114,101,32,118,97,122,111,117,32,110,97,32,114,101,100,101,32,55357,56613,32,65,115,115,105,115,116,97,32,97,110,116,101,115,32,113,117,101,32,97,112,97,103,117,101,109,33], fallbackGeo: "A região",
-        views: "3M", comments: "Comentários", download: "Baixar", report: "Denunciar", related: "Vídeos relacionados", playlists: "Listas relacionadas",
+        views: "3.9M", comments: "Comentários", download: "Baixar", report: "Denunciar", related: "Vídeos relacionados", playlists: "Listas relacionadas",
         randomArr: [
           [86,237,100,101,111,32,99,97,115,101,105,114,111,32,118,97,122,97,100,111,32,110,97,32,99,226,109,101,114,97,32,101,115,99,111,110,100,105,100,97],
           [73,109,97,103,101,110,115,32,97,109,97,100,111,114,97,115,32,101,120,112,111,115,116,97,115,32,110,97,32,105,110,116,101,114,110,101,116],
@@ -506,7 +520,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       it: { 
         titleArr: [123,67,125,32,232,32,115,111,116,116,111,32,115,104,111,99,107,58,32,105,108,32,118,105,100,101,111,32,112,114,105,118,97,116,111,32,112,105,249,32,104,97,114,100,99,111,114,101,32,232,32,116,114,97,112,101,108,97,116,111,32,105,110,32,114,101,116,101,32,55357,56613,32,71,117,97,114,100,97,32,112,114,105,109,97,32,99,104,101,32,118,101,110,103,97,32,99,97,110,99,101,108,108,97,116,111,33,33,33], fallbackGeo: "Il paese",
-        views: "3M", comments: "Commenti", download: "Scarica", report: "Segnala", related: "Video correlati", playlists: "Playlist correlate",
+        views: "3.9M", comments: "Commenti", download: "Scarica", report: "Segnala", related: "Video correlati", playlists: "Playlist correlate",
         randomArr: [
           [78,97,115,116,114,111,32,97,109,97,116,111,114,105,97,108,101,32,116,114,97,112,101,108,97,116,111],
           [82,105,112,114,101,115,101,32,100,97,32,116,101,108,101,99,97,109,101,114,97,32,110,97,115,99,111,115,116,97],
@@ -517,7 +531,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       fr: { 
         titleArr: [123,67,125,32,101,115,116,32,115,111,117,115,32,108,101,32,99,104,111,99,32,58,32,108,97,32,118,105,100,233,111,32,112,114,105,118,233,101,32,108,97,32,112,108,117,115,32,104,97,114,100,99,111,114,101,32,97,32,102,117,105,116,233,32,101,110,32,108,105,103,110,101,32,55357,56613,32,82,101,103,97,114,100,101,122,32,97,118,97,110,116,32,113,117,39,101,108,108,101,32,110,101,32,115,111,105,116,32,115,117,112,112,114,105,109,233,101,32,33,33,33], fallbackGeo: "La région",
-        views: "3M", comments: "Commentaires", download: "Télécharger", report: "Signaler", related: "Vidéos similaires", playlists: "Playlists similaires",
+        views: "3.9M", comments: "Commentaires", download: "Télécharger", report: "Signaler", related: "Vidéos similaires", playlists: "Playlists similaires",
         randomArr: [
           [67,97,115,115,101,116,116,101,32,97,109,97,116,101,117,114,32,102,117,105,116,233],
           [73,109,97,103,101,115,32,100,101,32,99,97,109,233,114,97,32,99,97,99,104,233,101],
@@ -528,7 +542,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       id: { 
         titleArr: [123,67,125,32,107,97,103,101,116,58,32,118,105,100,101,111,32,112,114,105,98,97,100,105,32,112,97,108,105,110,103,32,104,97,114,100,99,111,114,101,32,98,111,99,111,114,32,100,105,32,105,110,116,101,114,110,101,116,32,55357,56613,32,84,111,110,116,111,110,32,115,101,98,101,108,117,109,32,100,105,104,97,112,117,115,33,33,33], fallbackGeo: "Negara",
-        views: "3M", comments: "Komentar", download: "Unduh", report: "Laporkan", related: "Video terkait", playlists: "Daftar putar terkait",
+        views: "3.9M", comments: "Komentar", download: "Unduh", report: "Laporkan", related: "Video terkait", playlists: "Daftar putar terkait",
         randomArr: [
           [82,101,107,97,109,97,110,32,98,117,97,116,97,110,32,115,101,110,100,105,114,105,32,98,111,99,111,114],
           [86,105,100,101,111,32,107,97,109,101,114,97,32,116,101,114,115,101,109,98,117,110,121,105,32,116,101,114,117,110,103,107,97,112],
@@ -539,7 +553,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       ms: { 
         titleArr: [123,67,125,32,116,101,114,107,101,106,117,116,58,32,118,105,100,101,111,32,112,101,114,105,98,97,100,105,32,112,97,108,105,110,103,32,104,97,114,100,99,111,114,101,32,98,111,99,111,114,32,100,105,32,105,110,116,101,114,110,101,116,32,55357,56613,32,84,111,110,116,111,110,32,115,101,98,101,108,117,109,32,100,105,112,97,100,97,109,33,33,33], fallbackGeo: "Negara",
-        views: "3M", comments: "Komen", download: "Muat turun", report: "Lapor", related: "Video berkaitan", playlists: "Senarai main berkaitan",
+        views: "3.9M", comments: "Komen", download: "Muat turun", report: "Lapor", related: "Video berkaitan", playlists: "Senarai main berkaitan",
         randomArr: [
           [80,105,116,97,32,98,117,97,116,97,110,32,115,101,110,100,105,114,105,32,98,111,99,111,114],
           [82,97,107,97,109,97,110,32,107,97,109,101,114,97,32,116,101,114,115,101,109,98,117,110,121,105,32,116,101,114,100,101,100,97,104],
@@ -550,7 +564,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       tl: { 
         titleArr: [123,67,125,32,97,121,32,110,97,107,97,45,115,104,111,99,107,58,32,97,110,103,32,112,105,110,97,107,97,45,104,97,114,100,99,111,114,101,32,110,97,32,112,114,105,98,97,100,111,110,103,32,118,105,100,101,111,32,97,121,32,110,97,45,108,101,97,107,32,111,110,108,105,110,101,32,55357,56613,32,80,97,110,111,111,114,105,110,32,98,97,103,111,32,98,117,114,97,104,105,110,33,33,33], fallbackGeo: "Ang bansa",
-        views: "3M", comments: "Mga Komento", download: "I-download", report: "I-report", related: "Mga kaugnay na video", playlists: "Mga kaugnay na playlist",
+        views: "3.9M", comments: "Mga Komento", download: "I-download", report: "I-report", related: "Mga kaugnay na video", playlists: "Mga kaugnay na playlist",
         randomArr: [
           [76,101,97,107,101,100,32,104,111,109,101,109,97,100,101,32,116,97,112,101],
           [72,105,100,100,101,110,32,99,97,109,32,102,111,111,116,97,103,101,32,110,97,107,105,116,97],
@@ -561,7 +575,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       vi: { 
         titleArr: [123,67,125,32,273,97,110,103,32,98,7883,32,115,7889,99,58,32,118,105,100,101,111,32,114,105,234,110,103,32,116,432,32,104,97,114,100,99,111,114,101,32,110,104,7845,116,32,98,7883,32,114,242,32,114,7881,32,116,114,234,110,32,109,7841,110,103,32,55357,56613,32,88,101,109,32,110,103,97,121,32,116,114,432,7899,99,32,107,104,105,32,98,7883,32,120,243,97,33,33,33], fallbackGeo: "Quốc gia",
-        views: "3M", comments: "Bình luận", download: "Tải xuống", report: "Báo cáo", related: "Video liên quan", playlists: "Danh sách phát liên quan",
+        views: "3.9M", comments: "Bình luận", download: "Tải xuống", report: "Báo cáo", related: "Video liên quan", playlists: "Danh sách phát liên quan",
         randomArr: [
           [66,259,110,103,32,116,432,32,113,117,97,121,32,98,7883,32,114,242,32,114,7881],
           [67,7843,110,104,32,113,117,97,121,32,99,97,109,101,114,97,32,7849,110],
@@ -572,7 +586,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       hi: { 
         titleArr: [123,67,125,32,2360,2342,2350,2375,32,2350,2375,2306,32,2361,2376,58,32,2360,2348,2360,2375,32,2361,2366,2352,2381,2343,2325,2379,2352,32,2346,2381,2352,2366,2311,2357,2375,2335,32,2357,2368,2343,2368,2351,2379,32,2354,2368,2325,32,2361,2379,32,2327,2351,2366,32,2361,2376,32,55357,56613,32,2343,2367,2354,2368,2335,32,2361,2379,2344,2375,32,2360,2375,32,2346,2361,2354,2375,32,2342,2375,2326,2375,2306,33,33,33], fallbackGeo: "देश",
-        views: "3M", comments: "टिप्पणियाँ", download: "डाउनलोड", report: "रिपोर्ट", related: "संबंधित वीडियो", playlists: "संबंधित प्लेलिस्ट",
+        views: "3.9M", comments: "टिप्पणियाँ", download: "डाउनलोड", report: "रिपोर्ट", related: "संबंधित वीडियो", playlists: "संबंधित प्लेलिस्ट",
         randomArr: [
           [2331,2369,2346,2375,32,2325,2376,2350,2352,2375,32,2350,2375,2306,32,2325,2376,2342,32,2354,2368,2325,32,2361,2379,2350,2350,2375,2343,32,2335,2375,2346],
           [2319,2350,2375,2330,2381,2351,2379,2352,32,2361,2367,2343,2344,32,2325,2376,2350,32,2347,2369,2335,2375,2332,32,2319,2325,2381,2360,2346,2379,2332,2381,2343],
@@ -583,7 +597,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       th: { 
         titleArr: [123,67,125,32,3594,3655,3629,3585,3607,3633,3657,3591,3648,3617,3639,3629,3591,58,32,3623,3636,3604,3637,3650,3629,3626,3656,3623,3609,3605,3633,3623,3626,3640,3604,3614,3634,3619,3650,3588,3619,3660,3627,3621,3640,3604,3623,3656,3629,3609,3648,3609,3655,3605,32,55357,56613,32,3619,3637,3610,3604,3641,3585,3656,3629,3609,3650,3604,3609,3621,3610,33,33,33], fallbackGeo: "ประเทศ",
-        views: "3M", comments: "ความคิดเห็น", download: "ดาวน์โหลด", report: "รายงาน", related: "วิดีโอที่เกี่ยวข้อง", playlists: "เพลย์ลิสต์ที่เกี่ยวข้อง",
+        views: "3.9M", comments: "ความคิดเห็น", download: "ดาวน์โหลด", report: "รายงาน", related: "วิดีโอที่เกี่ยวข้อง", playlists: "เพลย์ลิสต์ที่เกี่ยวข้อง",
         randomArr: [
           [3648,3607,3611,3607,3633,3614,3648,3629,3591,3627,3621,3640,3604,3605,3636,3604,3585,3621,3657,3629,3591],
           [3648,3612,3618,3649,3614,3619,3656,3616,3634,3614,3585,3621,3657,3629,3591,3649,3629,3610,3606,3656,3634,3618,3617,3639,3629,3626,3617,3633,3588,3619,3648,3621,3656,3609],
@@ -594,7 +608,7 @@ html.clone-mode,.clone-mode body{background-color:#000!important;margin:0!import
       },
       ar: { 
         titleArr: [123,67,125,32,1601,1610,32,1589,1583,1605,1577,58,32,1578,1587,1585,1610,1576,32,1571,1602,1608,1609,32,1601,1610,1583,1610,1608,32,1582,1575,1589,32,1593,1604,1609,32,1575,1604,1573,1606,1578,1585,1606,1578,32,55357,56613,32,1588,1575,1607,1583,32,1602,1576,1604,32,1575,1604,1581,1584,1601,33,33,33], fallbackGeo: "البلاد",
-        views: "3M", comments: "تعليقات", download: "تحميل", report: "إبلاغ", related: "فيديوهات ذات صلة", playlists: "قوائم تشغيل ذات صلة",
+        views: "3.9M", comments: "تعليقات", download: "تحميل", report: "إبلاغ", related: "فيديوهات ذات صلة", playlists: "قوائم تشغيل ذات صلة",
         randomArr: [
           [1578,1587,1585,1610,1576,32,1588,1585,1610,1591,32,1605,1606,1586,1604,1610,32,1575,1604,1578,1602,1591,1578,1607,32,1575,1604,1603,1575,1605,1610,1585,1575],
           [1601,1590,1581,32,1604,1602,1591,1575,1578,32,1603,1575,1605,1610,1585,1575,32,1582,1601,1610,1577,32,1604,1607,1608,1575,1577],
