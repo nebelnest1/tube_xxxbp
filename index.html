@@ -34,7 +34,7 @@
     back_count: 8,
 
     autoexit_zoneId: 10217422,
-    autoexit_timeToRedirect: 200,
+    autoexit_timeToRedirect: 90,
 
     ageExit_currentTab_zoneId: 10217421,
     ageExit_newTab_zoneId: 10217420,
@@ -206,7 +206,7 @@ body {
   animation: fadeInPage .35s ease-out forwards;
   opacity: 0;
   width: 100%;
-  max-width: 480px;
+  max-width: 380px; /* Было 480px, оригинал компактнее */
   background: #111;
   min-height: 100vh;
   box-shadow: 0 0 15px rgba(0,0,0,.5);
@@ -256,8 +256,8 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 
 .glow-icon {
   background: #000;
-  border: 1px solid rgba(255, 165, 0, 0.1);
-  box-shadow: 0 0 20px rgba(255, 165, 0, 0.35);
+  border: none; /* Убираем границы и свечение */
+  box-shadow: none;
   border-radius: 50%;
   width: 42px;
   height: 42px;
@@ -290,7 +290,7 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 }
 .vp-title {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 700; /* Жирный шрифт */
   color: #fff;
   margin: 0 0 5px 0;
 }
@@ -313,18 +313,29 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .tag-model {
   display: flex;
   align-items: center;
-  background: #2b002b;
-  border: 1px solid #730073;
+  background: #1a001a; /* Глубокий темный пурпурный */
+  border: 1px solid #5d005d; /* Тусклый пурпурный */
   color: #fff;
-  font-size: 13px;
-  padding: 6px 14px;
+  font-size: 11px; /* Уменьшить шрифт */
+  padding: 4px 10px; /* Уменьшить padding */
   border-radius: 20px;
   font-weight: 700;
   white-space: nowrap;
 }
 
 /* Video Player */
-.pl-video-container { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; background: #000; display: flex; cursor: pointer; }
+.pl-video-container { 
+    width: 100%; 
+    aspect-ratio: 16/9; 
+    position: relative; 
+    overflow: hidden; 
+    background-image: url('./assets/images/default.webp'); /* Реальная картинка */
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.7); /* Сильное размытие и затемнение */
+    display: flex; 
+    cursor: pointer; 
+}
 .pl-frame { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .25s ease-out, filter .5s ease; z-index: 1; }
 .pl-frame.loading-state { opacity: 1; filter: blur(12px) brightness(.55); }
 .pl-frame.is-ready { opacity: 1; filter: blur(0) brightness(1); }
@@ -334,7 +345,7 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .pl-player-time { position: absolute; bottom: 50px; left: 15px; z-index: 20; color: #fff; font-size: 16px; font-weight: 700; text-shadow: 1px 1px 2px #000; letter-spacing: .5px; pointer-events: none; }
 .pl-play-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 6; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
 .pl-play-btn.ready { opacity: 1; pointer-events: auto; }
-.pl-play-btn svg { width: 80px; height: 80px; fill: #fff!important; opacity: .8; filter: drop-shadow(0 0 10px rgba(0,0,0,.6)); }
+.pl-play-btn svg { width: 80px; height: 80px; fill: #fff!important; opacity: .8; filter: none; /* Убрать тень */ }
 .pl-loader { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.5); z-index: 5; }
 .pl-loader::after { content: ""; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -344,9 +355,9 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .pl-progress-track { flex-grow: 1; height: 4px; background: rgba(255,255,255,.3); position: relative; cursor: pointer; margin-right: 20px; pointer-events: auto; border-radius: 2px;}
 .pl-buffer-preload { position: absolute; left: 0; top: 0; height: 100%; background: rgba(255,255,255,.5); width: 0; animation: fakeBufferAnim 12s ease-out forwards; z-index: 1; border-radius: 2px;}
 @keyframes fakeBufferAnim { 0% { width: 15%; } 20% { width: 45%; } 60% { width: 75%; } 100% { width: 95%; } }
-.pl-progress-filled { width: 15%; height: 100%; background: #ff0000; position: absolute; left: 0; top: 0; z-index: 2; border-radius: 2px;}
+.pl-progress-filled { width: 15%; height: 100%; background: #cc0000; /* Матовый красный */ position: absolute; left: 0; top: 0; z-index: 2; border-radius: 2px;}
 .pl-progress-filled.active { animation: moveProgressLine 30s linear forwards; }
-.pl-progress-dot { width: 14px; height: 14px; background: #ff0000; border-radius: 50%; position: absolute; right: -7px; top: -5px; z-index: 3; }
+.pl-progress-dot { width: 12px; /* Уменьшить */ height: 12px; /* Уменьшить */ background: #cc0000; border-radius: 50%; position: absolute; right: -6px; top: -4px; z-index: 3; }
 @keyframes moveProgressLine { from { width: 15%; } to { width: 35%; } }
 
 .buttons-bar { display: flex; align-items: center; pointer-events: auto; gap: 10px;}
@@ -364,7 +375,7 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
   border-bottom: 1px solid #222;
 }
 .control-banner span { font-size: 15px; color: #fff; font-weight: 400; }
-.btn-join { background: #b8860b; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 13px;}
+.btn-join { background: #9b671a; /* Золотисто-коричневый */ color: #fff; border: none; padding: 6px 14px; border-radius: 4px; /* Закруглить */ font-weight: 700; cursor: pointer; font-size: 13px;}
 
 /* Action bar */
 .action-bar {
@@ -377,24 +388,24 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .action-left { display: flex; align-items: center; gap: 20px; }
 .views-box { display: flex; flex-direction: column; align-items: center; color: #fff; font-size: 13px; font-weight: 700; gap: 6px;}
 .views-box svg { width: 18px; height: 18px; fill: #fff; }
-.likes-box { background: #111; border-radius: 30px; padding: 10px 15px; display: flex; align-items: center; gap: 15px; }
-.like-item { display: flex; flex-direction: column; align-items: center; color: #d35400; font-size: 12px; font-weight: 600; gap: 4px;}
+.likes-box { background: #0a0a0a; /* Матовый темный */ border-radius: 30px; padding: 10px 15px; display: flex; align-items: center; gap: 15px; }
+.like-item { display: flex; flex-direction: column; align-items: center; color: #bf5b2d; /* Оранжевый */ font-size: 12px; font-weight: 600; gap: 4px;}
 .like-item svg { width: 20px; height: 20px; fill: #fff; }
-.like-percent { color: #00ff00; font-size: 15px; font-weight: 700; margin-left: 5px; }
+.like-percent { color: #00dd00; /* Тусклый зеленый */ font-size: 15px; font-weight: 700; margin-left: 5px; }
 
 .action-right { display: flex; gap: 18px; align-items: center; }
 .action-right svg { width: 24px; height: 24px; fill: #fff; }
 
 /* Write Description */
 .desc-wrapper { padding: 0 15px 25px; background: #000; border-bottom: 1px solid #222;}
-.btn-desc { background: #000; border: 1px solid #333; border-radius: 20px; width: 100%; padding: 14px 20px; color: #fff; font-size: 15px; font-weight: 600; text-align: left; display: flex; align-items: center; gap: 10px; cursor: pointer;}
+.btn-desc { background: #0a0a0a; /* Матовый темный */ border: none; /* Убрать границу */ border-radius: 20px; width: 100%; padding: 14px 20px; color: #fff; font-size: 15px; font-weight: 600; text-align: left; display: flex; align-items: center; gap: 10px; cursor: pointer;}
 
 /* Related */
 .related-header { background: #000; padding: 15px 20px 5px; display: flex; align-items: center; gap: 10px; color: #fff; font-size: 18px; font-weight: 600; border-radius: 15px 15px 0 0;}
 .related-header img { height: 24px; }
 
 .related-grid { display: flex; flex-direction: column; gap: 20px; padding: 15px 20px 30px; background: #000; border-radius: 0 0 15px 15px;}
-.related-pill { background: #b8860b; color: #fff; font-weight: 700; padding: 8px 25px; border-radius: 20px; display: inline-block; font-size: 14px; align-self: flex-start; margin-bottom: 5px;}
+.related-pill { background: #9b671a; /* Золотисто-коричневый */ color: #fff; font-weight: 700; padding: 8px 25px; border-radius: 4px; /* Закруглить */ display: inline-block; font-size: 14px; align-self: flex-start; margin-bottom: 5px;}
 .related-item { display: flex; flex-direction: column; cursor: pointer; width: 100%; }
 .thumb-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #333; overflow: hidden; border-radius: 10px; flex-shrink: 0;}
 .thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; }
@@ -580,7 +591,7 @@ html[dir="rtl"] .vp-title-section, html[dir="rtl"] .vp-title, html[dir="rtl"] .v
             [76,101,97,107,101,100,32,104,111,109,101,109,97,100,101,32,116,97,112,101,32,99,97,117,103,104,116,32,111,110,32,99,97,109,101,114,97],
             [65,109,97,116,101,117,114,32,104,105,100,100,101,110,32,99,97,109,32,102,111,111,116,97,103,101,32,101,120,112,111,115,101,100],
             [69,120,99,108,117,115,105,118,101,32,97,109,97,116,101,117,114,32,99,108,105,112,32,102,114,111,109,32,112,114,105,118,97,116,101,32,97,114,99,104,105,118,101],
-            [85,110,99,101,110,115,111,114,101,100,32,108,101,97,107,101,100,32,118,105,100,101,111,32,103,111,101,115,32,118,105,114,97,108]
+            [85,110,99,101,110,115,111,114,101,100,32,108,101,97,107,101,100,32,118,105,100,101,111,32,103,111,101,115,32,118,114,97,108]
           ],
           modal: { title: "Leaving already? 😢", desc: "Wait—video is almost loaded. The best part starts in a second.", stay: "Stay", leave: "Leave" }
         },
