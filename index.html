@@ -15,7 +15,7 @@
 
   <link rel="preload" href="./assets/favicon/ui-icons-v2.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/favicon/iconfont.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://exo-r2-uploader-v2.nebelnestx.workers.dev">
+  <link rel="preconnect" href="https://cdn.x0x.online">
 
   <script>
   var urlParams = new URLSearchParams(window.location.search);
@@ -336,14 +336,14 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 /* Время видео */
 .pl-player-time { 
     position: absolute; 
-    bottom: 46px; /* Ровно над ползунком громкости */
-    left: 70px; /* Выравнивание по началу прогресс-бара */
+    bottom: 46px; 
+    left: 70px; 
     z-index: 20; 
     color: #fff; 
     font-size: 16px; 
     font-family: Arial, sans-serif;
     font-weight: 700; 
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8), 0px 0px 5px rgba(0,0,0,0.5); /* Четкая тень как в оригинале */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8), 0px 0px 5px rgba(0,0,0,0.5); 
     pointer-events: none; 
 }
 
@@ -376,21 +376,20 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .pl-small-play { width: 22px; height: 22px; fill: #fff; margin-right: 15px; cursor: pointer; pointer-events: auto; }
 .pl-vol-btn { width: 24px; height: 24px; fill: #fff; margin-right: 18px; cursor: pointer; pointer-events: auto; }
 
-/* Полоса прокрутки */
-.pl-progress-track { flex-grow: 1; height: 4px; background: rgba(255,255,255,.25); position: relative; cursor: pointer; margin-right: 20px; pointer-events: auto; border-radius: 2px;}
-.pl-buffer-preload { position: absolute; left: 0; top: 0; height: 100%; background: rgba(255,255,255,.4); width: 0; animation: fakeBufferAnim 12s ease-out forwards; z-index: 1; border-radius: 2px;}
+/* Полоса прокрутки - красная как в оригинале */
+.pl-progress-track { flex-grow: 1; height: 3px; background: rgba(255,255,255,.3); position: relative; cursor: pointer; margin-right: 15px; pointer-events: auto; display: flex; align-items: center; }
+.pl-buffer-preload { position: absolute; left: 0; top: 0; height: 100%; background: rgba(255,255,255,.5); width: 0; animation: fakeBufferAnim 12s ease-out forwards; z-index: 1;}
 @keyframes fakeBufferAnim { 0% { width: 15%; } 20% { width: 45%; } 60% { width: 75%; } 100% { width: 95%; } }
-.pl-progress-filled { width: 15%; height: 100%; background: #ff0000; position: absolute; left: 0; top: 0; z-index: 2; border-radius: 2px;}
+.pl-progress-filled { width: 15%; height: 100%; background: #ff0000; position: absolute; left: 0; top: 0; z-index: 2;}
 .pl-progress-filled.active { animation: moveProgressLine 30s linear forwards; }
 .pl-progress-dot { 
-    width: 16px; 
-    height: 16px; 
+    width: 12px; 
+    height: 12px; 
     background: #ff0000; 
     border-radius: 50%; 
     position: absolute; 
-    right: -8px; 
-    top: 50%; /* Идеальное центрирование по вертикали */
-    transform: translateY(-50%); 
+    right: -6px; 
+    top: -4.5px; /* Четкое центрирование на полосе 3px */
     z-index: 3; 
 }
 @keyframes moveProgressLine { from { width: 15%; } to { width: 35%; } }
@@ -534,7 +533,7 @@ html[dir="rtl"] .vp-title-section, html[dir="rtl"] .vp-title, html[dir="rtl"] .v
         
         <div class="buttons-bar right noselect">
           <span class="settings-btn" id="anc-tst-params-btn" data-target="settings">
-            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#fff" d="M19.4 13c.08-.66.14-1.32.14-2s-.06-1.34-.14-2l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.6 11c-.08.66-.14 1.32-.14 2s.06 1.34.14 2l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64L19.4 13zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#fff" d="M19.4 13c.08-.66.14-1.32.14-2s-.06-1.34-.14-2l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49-.12.64L4.6 11c-.08.66-.14 1.32-.14 2s.06 1.34.14 2l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64L19.4 13zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
           </span>
           <span style="width: 24px; height: 24px;" data-target="fullscreen">
             <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#fff" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -750,7 +749,7 @@ html[dir="rtl"] .vp-title-section, html[dir="rtl"] .vp-title, html[dir="rtl"] .v
         playBtn.classList.add("ready");
 
         if (frame && cid && cr) {
-          frame.src = `https://exo-r2-uploader-v2.nebelnestx.workers.dev/frames/${encodeURIComponent(cid)}/${encodeURIComponent(cr)}.webp`;
+          frame.src = `https://cdn.x0x.online/frames/${encodeURIComponent(cid)}/${encodeURIComponent(cr)}.webp`;
           frame.classList.add("is-ready");
 
           frame.addEventListener("error", function onError() {
