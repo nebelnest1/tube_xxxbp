@@ -225,23 +225,6 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .clone-mode .pl-player-time { bottom: calc(50px + env(safe-area-inset-bottom,0px))!important; }
 .clone-mode .pl-clone-back-btn { display: flex!important; top: calc(env(safe-area-inset-top,0px) + 25px)!important; }
 
-/* Fonts */
-@font-face { font-family: 'ui-icons-v2'; src: url('./assets/favicon/ui-icons-v2.woff2') format('woff2'); }
-@font-face { font-family: 'iconfont'; src: url('./assets/favicon/iconfont.woff2') format('woff2'); }
-.icon-f, .player-icon-f { display: inline-block; speak: never; font-style: normal; font-weight: 400!important; font-variant: normal; text-transform: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-.player-icon-f { font-family: 'ui-icons-v2'!important; color: #fff; text-shadow: .03em .03em .1em #000, 0 0 .5em rgba(0,0,0,.5), 0 0 1em rgba(0,0,0,.5); }
-.pif-chromecast:before { content: "\e902"; }
-.pif-pause:before { content: "\e910"; }
-.pif-camera:before { content: "\e913"; }
-.pif-settings:before { content: "\e919"; }
-.pif-full-screen-animated { display: inline-block; height: 1em; width: 1em; position: relative; }
-.pif-full-screen-animated span { height: .5em; overflow: hidden; position: absolute; transition: transform .1s ease-in-out; width: .5em; }
-.pif-full-screen-animated span:before { content: "\e906"; display: inline-block; height: 1em; position: absolute; width: 1em; }
-.pif-full-screen-animated span:nth-child(1), .pif-full-screen-animated span:nth-child(1):before { left: 0; top: 0; }
-.pif-full-screen-animated span:nth-child(2), .pif-full-screen-animated span:nth-child(2):before { right: 0; top: 0; }
-.pif-full-screen-animated span:nth-child(3), .pif-full-screen-animated span:nth-child(3):before { bottom: 0; left: 0; }
-.pif-full-screen-animated span:nth-child(4), .pif-full-screen-animated span:nth-child(4):before { bottom: 0; right: 0; }
-
 /* Custom Template UI */
 .vp-header {
   display: flex;
@@ -329,48 +312,80 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
     aspect-ratio: 16/9; 
     position: relative; 
     overflow: hidden; 
-    background: #000; /* Контейнер без блюра! */
+    background: #000;
     display: flex; 
     cursor: pointer; 
 }
+
+/* Фрейм БЕЗ БЛЮРА */
 .pl-frame { 
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
     opacity: 0; 
-    transition: opacity .25s ease-out, filter .5s ease; 
+    transition: opacity .25s ease-out; 
     z-index: 1; 
-    transform: scale(1.1); /* Чтобы размытие по краям не давало рамку */
 }
-.pl-frame.loading-state { opacity: 1; filter: blur(15px) brightness(0.55); }
-.pl-frame.is-ready { opacity: 1; filter: blur(15px) brightness(0.6); } /* Блюр только на самой картинке! */
+.pl-frame.loading-state { opacity: 1; }
+.pl-frame.is-ready { opacity: 1; filter: none; }
 
 .pl-clone-back-btn { display: none; position: absolute; top: 15px; left: 15px; z-index: 50; width: 32px; height: 32px; cursor: pointer; align-items: center; justify-content: center; filter: drop-shadow(1px 1px 2px rgba(0,0,0,.8)); }
 .pl-clone-back-btn svg { width: 28px; height: 28px; }
 .pl-chromecast { display: none; } 
-.pl-player-time { position: absolute; bottom: 50px; left: 15px; z-index: 20; color: #fff; font-size: 16px; font-weight: 700; text-shadow: 1px 1px 2px #000; letter-spacing: .5px; pointer-events: none; }
 
+/* Время видео НАД нижней панелью */
+.pl-player-time { 
+    position: absolute; 
+    bottom: 40px; /* Над нижней полосой контролов */
+    left: 15px; 
+    z-index: 20; 
+    color: rgba(255, 255, 255, 0.85); 
+    font-size: 14px; 
+    font-weight: 700; 
+    pointer-events: none; 
+}
+
+/* Центральная серая кнопка Play */
 .pl-play-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 6; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
 .pl-play-btn.ready { opacity: 1; pointer-events: auto; }
-.pl-play-btn svg { width: 80px; height: 80px; fill: #fff!important; opacity: .8; filter: none; }
+.pl-play-btn svg { width: 70px; height: 70px; filter: none; }
 
 .pl-loader { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.5); z-index: 5; }
 .pl-loader::after { content: ""; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.pl-bottom-controls { position: absolute; bottom: 0; left: 0; width: 100%; height: 45px; display: flex; align-items: center; padding: 0 15px; box-sizing: border-box; background: linear-gradient(0deg, rgba(0,0,0,.8) 0, transparent 100%); z-index: 5; pointer-events: none; }
+/* Нижняя панель с градиентом */
+.pl-bottom-controls { 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 40px; 
+    display: flex; 
+    align-items: center; 
+    padding: 0 15px; 
+    box-sizing: border-box; 
+    background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, transparent 100%); 
+    z-index: 5; 
+    pointer-events: none; 
+}
+
+/* Иконки в нижней панели */
+.pl-small-play { width: 30px; height: 30px; fill: #fff; margin-right: 12px; cursor: pointer; pointer-events: auto; }
 .pl-vol-btn { width: 26px; height: 26px; fill: #fff; margin-right: 15px; cursor: pointer; pointer-events: auto; }
-.pl-progress-track { flex-grow: 1; height: 4px; background: rgba(255,255,255,.3); position: relative; cursor: pointer; margin-right: 20px; pointer-events: auto; border-radius: 2px;}
-.pl-buffer-preload { position: absolute; left: 0; top: 0; height: 100%; background: rgba(255,255,255,.5); width: 0; animation: fakeBufferAnim 12s ease-out forwards; z-index: 1; border-radius: 2px;}
+
+/* Полоса прокрутки */
+.pl-progress-track { flex-grow: 1; height: 3px; background: rgba(255,255,255,.4); position: relative; cursor: pointer; margin-right: 20px; pointer-events: auto; border-radius: 0;}
+.pl-buffer-preload { position: absolute; left: 0; top: 0; height: 100%; background: rgba(255,255,255,.5); width: 0; animation: fakeBufferAnim 12s ease-out forwards; z-index: 1;}
 @keyframes fakeBufferAnim { 0% { width: 15%; } 20% { width: 45%; } 60% { width: 75%; } 100% { width: 95%; } }
-.pl-progress-filled { width: 15%; height: 100%; background: #cc0000; position: absolute; left: 0; top: 0; z-index: 2; border-radius: 2px;}
+.pl-progress-filled { width: 15%; height: 100%; background: #ff0000; position: absolute; left: 0; top: 0; z-index: 2;}
 .pl-progress-filled.active { animation: moveProgressLine 30s linear forwards; }
-.pl-progress-dot { width: 12px; height: 12px; background: #cc0000; border-radius: 50%; position: absolute; right: -6px; top: -4px; z-index: 3; }
+.pl-progress-dot { width: 14px; height: 14px; background: #ff0000; border-radius: 50%; position: absolute; right: -7px; top: -5.5px; z-index: 3; }
 @keyframes moveProgressLine { from { width: 15%; } to { width: 35%; } }
 
-.buttons-bar { display: flex; align-items: center; pointer-events: auto; gap: 10px;}
+/* Кнопки справа в панели (Settings, Fullscreen) */
+.buttons-bar { display: flex; align-items: center; pointer-events: auto; gap: 18px;}
 .buttons-bar > * { display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
-.settings-btn { width: 24px; height: 24px; font-size: 24px;}
 
 /* Banner */
 .control-banner {
@@ -483,30 +498,34 @@ html[dir="rtl"] .vp-title-section, html[dir="rtl"] .vp-title, html[dir="rtl"] .v
         <svg viewBox="0 0 24 24"><path fill="#fff" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </div>
       <div class="pl-chromecast" data-target="banner_main">
-        <span class="player-icon-f pif-chromecast"></span>
         <span>Chromecast</span>
       </div>
-      <div class="pl-player-time">0:00 / 4:09</div>
+      
+      <div class="pl-player-time">0:27 / 4:09</div>
       
       <img class="pl-frame pl-main-play-trigger" id="frame" alt="" fetchpriority="high" decoding="async" data-target="main_play" />
       <div class="pl-loader pl-shimmer pl-main-play-trigger" data-target="main_play"></div>
       
       <div class="pl-play-btn pl-main-play-trigger" data-target="main_play" aria-label="Play">
-        <svg viewBox="0 0 100 100"><path d="M 35 25 L 75 50 L 35 75 Z" /></svg>
+        <svg viewBox="0 0 100 100"><path d="M 35 25 L 75 50 L 35 75 Z" fill="rgba(80,80,80,0.85)" stroke="rgba(80,80,80,0.85)" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/></svg>
       </div>
       
       <div class="pl-bottom-controls" data-target="timeline">
+        <svg class="pl-small-play" viewBox="0 0 24 24" data-target="play_pause"><path d="M8 5v14l11-7z"/></svg>
+        
         <svg class="pl-vol-btn" viewBox="0 0 24 24" data-target="mute_unmute"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        
         <div class="pl-progress-track" data-target="timeline">
            <div class="pl-buffer-preload"></div>
            <div class="pl-progress-filled pl-buffer-bar"><div class="pl-progress-dot"></div></div>
         </div>
+        
         <div class="buttons-bar right noselect">
-          <div class="settings-btn" id="anc-tst-params-btn" data-target="settings">
-            <span class="player-icon-f pif-settings"></span>
-          </div>
-          <span style="width: 24px; height: 24px; font-size: 24px;" data-target="fullscreen">
-            <span class="player-icon-f pif-full-screen-animated"><span></span><span></span><span></span><span></span></span>
+          <span class="settings-btn" id="anc-tst-params-btn" data-target="settings">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M19.4 13c.08-.66.14-1.32.14-2s-.06-1.34-.14-2l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.6 11c-.08.66-.14 1.32-.14 2s.06 1.34.14 2l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64L19.4 13zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+          </span>
+          <span style="width: 24px; height: 24px;" data-target="fullscreen">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
           </span>
         </div>
       </div>
