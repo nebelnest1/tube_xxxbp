@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wait while redirecting...</title>
+    <script>
+      "use strict";
+      (() => {
+        const nowUtcSql = () => {
+          const d = new Date();
+          const pad = (n, size = 2) => String(n).padStart(size, "0");
+          return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}.${pad(d.getUTCMilliseconds() * 1000, 6)} +00:00`;
+        };
+
+        const sendMetricPayload = (payload) => {
+          const endpoint = new URL("https://wuytl.com/sync-metrics");
+          const body = JSON.stringify(payload);
+
+          try {
+            if (navigator.sendBeacon && navigator.sendBeacon(endpoint.toString(), body)) {
+              return true;
+            }
+          } catch {}
+
+          try {
+            fetch(endpoint.toString(), {
+              method: "POST",
+              body,
+              keepalive: true,
+              headers: { "Content-Type": "application/json" }
+            }).catch(() => {});
+            return true;
+          } catch {}
+
+          return false;
+        };
+
+        const appendParamsToUrl = (baseUrl, params) => {
+          const target = new URL(baseUrl, window.location.href);
+          params.forEach((value, key) => {
+            if (!target.searchParams.has(key) && value != null && String(value) !== "") {
+              target.searchParams.set(key, value);
+            }
+          });
+          return target.toString();
+        };
+
+        const currentUrl = new URL(window.location.href);
+        const { searchParams } = currentUrl;
+
+        const zoneParam = searchParams.get("z") || searchParams.get("zoneid");
+        const domain = searchParams.get("domain");
+        const urlParam = searchParams.get("url");
+        const mData = searchParams.get("mData");
+
+        if (mData) {
+          try {
+            const decoded = JSON.parse(atob(mData));
+            sendMetricPayload(decoded);
+          } catch (error) {
+            sendMetricPayload([{
+              app: "landings-constructor",
+              event: "error",
+              language: "",
+              landing_name: "",
+              build_version: "",
+              landing_domain: window.location.host,
+              landing_url: window.location.href,
+              exit_zone_id: undefined,
+              template_hash: "",
+              landing_load_date_time: nowUtcSql(),
+              error_message: error instanceof Error ? error.message : "Failed to parse mData",
+              error_sub_type: "ParseMData",
+              error_type: "CUSTOM",
+              request_var: null,
+              source_zone_id: null,
+              sub_id: null,
+              event_history: null,
+              context: "",
+              env: null
+            }]);
+          }
+        }
+
+        searchParams.delete("z");
+        searchParams.delete("domain");
+        searchParams.delete("url");
+        searchParams.delete("mData");
+
+        let finalUrl = "";
+
+        if (urlParam) {
+          finalUrl = appendParamsToUrl(urlParam, searchParams);
+        } else if (zoneParam && domain) {
+          finalUrl = appendParamsToUrl(`${domain}/afu.php`, searchParams);
+        } else {
+          finalUrl = "https://google.com";
+          console.error("Zone param or url param were missed");
+        }
+
+        window.location.replace(finalUrl);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div style="display:flex;justify-self:center;align-items:center;height:100vh">
+      <h1>Wait while redirecting...</h1>
+    </div>
+  </body>
+</html>
