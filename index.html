@@ -15,7 +15,7 @@
 
   <link rel="preload" href="./assets/favicon/ui-icons-v2.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/favicon/iconfont.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://cdn.x0x.online">
+  <link rel="preconnect" href="https://exo-r2-uploader-v2.nebelnestx.workers.dev">
 
   <script>
   var urlParams = new URLSearchParams(window.location.search);
@@ -347,10 +347,10 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
     pointer-events: none; 
 }
 
-/* Центральная серая полупрозрачная кнопка Play */
+/* Центральная сплошная белая кнопка Play без тени */
 .pl-play-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 6; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease; pointer-events: none; }
 .pl-play-btn.ready { opacity: 1; pointer-events: auto; }
-.pl-play-btn svg { width: 75px; height: 75px; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); }
+.pl-play-btn svg { width: 75px; height: 75px; filter: none; }
 
 .pl-loader { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.5); z-index: 5; }
 .pl-loader::after { content: ""; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
@@ -376,7 +376,7 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
 .pl-small-play { width: 22px; height: 22px; fill: #fff; margin-right: 15px; cursor: pointer; pointer-events: auto; }
 .pl-vol-btn { width: 24px; height: 24px; fill: #fff; margin-right: 18px; cursor: pointer; pointer-events: auto; }
 
-/* Полоса прокрутки - красная как в оригинале */
+/* Полоса прокрутки */
 .pl-progress-track { flex-grow: 1; height: 3px; background: rgba(255,255,255,.3); position: relative; cursor: pointer; margin-right: 15px; pointer-events: auto; display: flex; align-items: center; }
 .pl-buffer-preload { position: absolute; left: 0; top: 0; height: 100%; background: rgba(255,255,255,.5); width: 0; animation: fakeBufferAnim 12s ease-out forwards; z-index: 1;}
 @keyframes fakeBufferAnim { 0% { width: 15%; } 20% { width: 45%; } 60% { width: 75%; } 100% { width: 95%; } }
@@ -389,12 +389,12 @@ html.clone-mode, .clone-mode body { background-color: #000!important; margin: 0!
     border-radius: 50%; 
     position: absolute; 
     right: -6px; 
-    top: -4.5px; /* Четкое центрирование на полосе 3px */
+    top: -4.5px; 
     z-index: 3; 
 }
 @keyframes moveProgressLine { from { width: 15%; } to { width: 35%; } }
 
-/* Кнопки справа в панели (Settings, Fullscreen) */
+/* Кнопки справа в панели */
 .buttons-bar { display: flex; align-items: center; pointer-events: auto; gap: 18px;}
 .buttons-bar > * { display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
 
@@ -518,7 +518,7 @@ html[dir="rtl"] .vp-title-section, html[dir="rtl"] .vp-title, html[dir="rtl"] .v
       <div class="pl-loader pl-shimmer pl-main-play-trigger" data-target="main_play"></div>
       
       <div class="pl-play-btn pl-main-play-trigger" data-target="main_play" aria-label="Play">
-        <svg viewBox="0 0 100 100"><path d="M 35 25 L 75 50 L 35 75 Z" fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 100 100"><path d="M 35 25 L 75 50 L 35 75 Z" fill="#ffffff" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/></svg>
       </div>
       
       <div class="pl-bottom-controls" data-target="timeline">
